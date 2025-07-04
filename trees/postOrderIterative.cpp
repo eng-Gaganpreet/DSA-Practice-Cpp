@@ -33,39 +33,46 @@ node *buildTree(node *root)
     return root;
 }
 
-int height(node * root,int &diameter)
+vector<int> postOrderInterative(node * root)
 {
-    if(root == nullptr)
-        return 0;
-    
-    int lh = height(root->left, diameter);
-    int rh = height(root->right,diameter);
-    diameter = max(diameter,lh+rh);
+    stack<node*>st;
+    st.push(root);
+    vector<int>ans;
 
-    return 1+max(lh,rh);
-}
+    while(not st.empty())
+    {
+        node *temp = st.top();
+        st.pop();
+        ans.push_back(temp->data);
 
-int diameterOfTree(node * root)
-{
-    int diameter = 0;
-    height(root,diameter);
+        if(temp->left)  
+            st.push(temp->left);
+        
+        if(temp->right)
+            st.push(temp->right);
+    }
+    reverse(ans.begin() , ans.end());
 
-    return diameter;
+    return ans;
 }
 
 int main()
-{
-            //      1
-            //     / \
-            //    2   3
-            //   /\    /
-            //  4  5   6 
-
+{ 
     // 1 2 4 -1 -1 5 -1 -1  3 6 -1 -1 -1
-    node *root = buildTree(root);
 
-    int d = diameterOfTree(root);
-    cout<<"The diameter of the tree : "<<d;
-    
+        //         1
+        //     2         3
+        // 4      5   6
+
+    node *root = buildTree(root);
+    vector<int>ans;
+    ans = postOrderInterative(root);
+
+    for(int ele : ans)
+    {
+        cout<<ele<<"  ";
+    }
+    cout<<endl;
+
     return 0;
 }
